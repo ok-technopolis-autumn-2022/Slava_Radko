@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo App</title>
+</head>
+<body>
+<!--Здесь я использую технологию классового именования тэгов - БЭМ-->
+<!--Я считаю, что эта технология подходит лучше всего, т.к. она отлично показывает связь между элементами
+и их вложенность-->
+<!--Хотя, с другой стороны, такая технология не даёт гибкого изменения вёрстки, ибо получается слишком большое нагромождение классов,
+поэтому этот уровень вложенности нужно регулировать (у каждого большого компонента должна быть своя вложенность)-->
+<!--Всё это может быть легко стилизовано с помощью препроцессора (например, SCSS)-->
+<div class="todo">
+    <h1 class="todo__title">todos</h1>
+    <div class="todo__content">
+        <!--В принципе, форму делать необязательно, потому что задача может быть
+        отправлена с помощью JS со всеми проверками (ещё и без перезагрузки страницы),
+        но на статичном сайте такая форма необходима.-->
+        <form class="todo__content__input" method="post">
+            <img src="./assets/select.png" alt="select">
+            <input type="text" placeholder="What needs to be done?">
+        </form>
+        <!--Здесь начинается новый уровень вложенности компонента list-->
+        <div class="todo__content__list list">
+            <!--Предлагаю идею сделать чекбокс с помощью
+            обычного div'а, дабы просто кастомизировать его с помощью
+            CSS (можно использовать псевдокласс :before для галочки) -->
+            <!--Также предлагаю использовать дополнительный класс checkbox,
+            описывающий непосредственную кастомизацию чекбокса, а БЭМ-класс
+            использовать для отступов и т.д.-->
+            <!--Класс done будет индицировать выполнение задачи.-->
+            <div class="list__item">
+                <div class="list__item__checkbox checkbox"></div>
+                <p class="list__item__text">HTML</p>
+                <i class="list__item__remove">&times;</i>
+            </div>
+            <div class="list__item done">
+                <div class="list__item__checkbox checkbox"></div>
+                <p class="list__item__text">CSS</p>
+                <i class="list__item__remove">&times;</i>
+            </div>
+            <div class="list__item">
+                <div class="list__item__checkbox checkbox"></div>
+                <p class="list__item__text">JS</p>
+                <i class="list__item__remove">&times;</i>
+            </div>
+            <div class="list__item">
+                <div class="list__item__checkbox checkbox"></div>
+                <p class="list__item__text">JS tools</p>
+                <i class="list__item__remove">&times;</i>
+            </div>
+        </div>
+        <!--Здесь начинается новый уровень вложенности компонента footer-->
+        <footer class="todo__content__footer footer">
+            <div class="footer__left">3 items left</div>
+            <nav class="footer__nav">
+                <div class="footer__nav__link">All</div>
+                <div class="footer__nav__link">Active</div>
+                <div class="footer__nav__link">Completed</div>
+            </nav>
+            <div class="footer__clear_completed">Clear completed</div>
+        </footer>
+    </div>
+</div>
+</body>
+</html>
