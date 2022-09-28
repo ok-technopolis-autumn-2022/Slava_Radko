@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo App</title>
+</head>
+<body>
+<!--Используется методология БЭМ, т.к. она наиболее удобна-->
+<div class="todo">
+    <h1 class="todo-title">todos</h1>
+    <div class="todo-content">
+        <form class="todo-content__input" method="post">
+            <img src="./assets/select.png" alt="select">
+            <input type="text" placeholder="What needs to be done?">
+        </form>
+        <div class="todo-list">
+            <div class="todo-list__task task">
+                <input class="task__checkbox checkbox" type="checkbox">
+                <p class="task__text">HTML</p>
+                <i class="task__remove">&times;</i>
+            </div>
+            <div class="todo-list__task task done">
+                <input class="task__checkbox checkbox" type="checkbox">
+                <p class="task__text">CSS</p>
+                <i class="task__remove">&times;</i>
+            </div>
+            <div class="todo-list__task task">
+                <input class="task__checkbox checkbox" type="checkbox">
+                <p class="task__text">JS</p>
+                <i class="task__remove">&times;</i>
+            </div>
+            <div class="todo-list__task task">
+                <input class="task__checkbox checkbox" type="checkbox">
+                <p class="task__text">JS tools</p>
+                <i class="task__remove">&times;</i>
+            </div>
+        </div>
+        <footer class="todo-footer">
+            <div class="todo-footer__items-count">3 items left</div>
+            <nav class="todo-footer__nav">
+                <a href="#" class="todo-footer__nav-link">All</a>
+                <a href="#" class="todo-footer__nav-link">Active</a>
+                <a href="#" class="todo-footer__nav-link">Completed</a>
+            </nav>
+            <a href="#" class="todo-footer__clear">Clear completed</a>
+        </footer>
+    </div>
+</div>
+</body>
+</html>
