@@ -12,40 +12,50 @@
 <div class="todo">
     <h1 class="todo-title">todos</h1>
     <div class="todo-content">
-        <form class="todo-content__input" method="post">
-            <img src="./assets/select.png" alt="select">
-            <input type="text" placeholder="What needs to be done?">
+        <form class="todo-content__add-form add-form" method="post">
+            <!--Here comes background of the button.-->
+            <button class="add-form__add"></button>
+            <input class="add-form__text" type="text" placeholder="What needs to be done?">
         </form>
-        <div class="todo-list">
+        <main class="todo-list">
             <div class="todo-list__task task">
                 <input class="task__checkbox checkbox" type="checkbox">
                 <p class="task__text">HTML</p>
-                <i class="task__remove">&times;</i>
+                <button class="task__remove">&times;</button>
             </div>
-            <div class="todo-list__task task done">
+            <div class="todo-list__task task task_done">
                 <input class="task__checkbox checkbox" type="checkbox">
                 <p class="task__text">CSS</p>
-                <i class="task__remove">&times;</i>
+                <button class="task__remove">&times;</button>
             </div>
             <div class="todo-list__task task">
                 <input class="task__checkbox checkbox" type="checkbox">
                 <p class="task__text">JS</p>
-                <i class="task__remove">&times;</i>
+                <button class="task__remove">&times;</button>
             </div>
             <div class="todo-list__task task">
                 <input class="task__checkbox checkbox" type="checkbox">
                 <p class="task__text">JS tools</p>
-                <i class="task__remove">&times;</i>
+                <button class="task__remove">&times;</button>
             </div>
-        </div>
+        </main>
         <footer class="todo-footer">
             <div class="todo-footer__items-count">3 items left</div>
             <nav class="todo-footer__nav">
-                <a href="#" class="todo-footer__nav-link">All</a>
-                <a href="#" class="todo-footer__nav-link">Active</a>
-                <a href="#" class="todo-footer__nav-link">Completed</a>
+                <label for="all">
+                    All
+                    <input id="all" class="todo-footer__nav-switch" type="radio">
+                </label>
+                <label for="active">
+                    Active
+                    <input id="active" class="todo-footer__nav-switch" type="radio">
+                </label>
+                <label for="completed">
+                    Completed
+                    <input id="completed" class="todo-footer__nav-switch" type="radio">
+                </label>
             </nav>
-            <a href="#" class="todo-footer__clear">Clear completed</a>
+            <button class="todo-footer__clear">Clear completed</button>
         </footer>
     </div>
 </div>
