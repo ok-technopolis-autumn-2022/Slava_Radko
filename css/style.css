@@ -88,7 +88,6 @@ button.add-form__select-all {
     background-repeat: no-repeat;
     background-color: inherit;
     background-position: center;
-    outline: none;
     border: none;
     margin-left: 16px;
 }
@@ -99,10 +98,10 @@ button.add-form__select-all {
 
 input.add-form__text {
     height: 100%;
+    width: calc(100% - 64px);
     font-size: 24px;
-    padding: 8px 16px;
+    margin: 8px 16px;
     font-weight: 300;
-    outline: none;
     border: none;
 }
 
@@ -140,6 +139,9 @@ input.add-form__text::placeholder {
     font-size: 24px;
     color: var(--font-color-primary);
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis ellipsis;
 }
 
 .task__checkbox {
