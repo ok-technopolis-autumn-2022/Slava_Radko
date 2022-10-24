@@ -229,6 +229,10 @@ input.todo-footer__nav-switch:checked + label {
     border-radius: 2px;
 }
 
+input.todo-footer__nav-switch:focus + label {
+    outline: 1px solid #000;
+}
+
 input.todo-footer__nav-switch {
     appearance: none;
 }
