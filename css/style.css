@@ -75,13 +75,15 @@ button {
 /* Form */
 .add-form {
     display: flex;
+    height: 66px;
     flex-flow: row nowrap;
     align-items: center;
     box-shadow: inset 0 -1px 0 #E6E6E6;
+    padding: 4px 0;
 }
 
 button.add-form__select-all {
-    height: 66px;
+    height: 100%;
     width: 32px;
     background-image: url("../assets/select.svg");
     background-size: contain;
@@ -139,9 +141,7 @@ input.add-form__text::placeholder {
     font-size: 24px;
     color: var(--font-color-primary);
     cursor: pointer;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis ellipsis;
+    word-break: break-all;
 }
 
 .task__checkbox {
@@ -149,14 +149,15 @@ input.add-form__text::placeholder {
 }
 
 .task__remove {
-    height: 20px;
-    width: 20px;
+    height: 28px;
+    width: 28px;
     background-image: url("../assets/remove.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
     margin-left: 8px;
     opacity: 0;
+    box-sizing: content-box;
 }
 
 .task:hover .task__remove {
@@ -225,7 +226,7 @@ input.checkbox:checked + label {
 
 input.todo-footer__nav-switch:checked + label {
     width: fit-content;
-    border: 1px solid #EBDFDF;
+    outline: 1px solid #EBDFDF;
     border-radius: 2px;
 }
 
