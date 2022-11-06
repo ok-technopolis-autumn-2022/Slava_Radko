@@ -1,0 +1,27 @@
+{
+  "name": "slava_radko",
+  "source": "./src/index.html",
+  "version": "1.0.0",
+  "description": "Todo App",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel",
+    "build": "parcel build",
+    "fix": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ok-technopolis-autumn-2022/Slava_Radko.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ok-technopolis-autumn-2022/Slava_Radko/issues"
+  },
+  "homepage": "https://github.com/ok-technopolis-autumn-2022/Slava_Radko#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.7.0",
+    "parcel": "^2.7.0",
+    "prettier": "2.7.1"
+  }
+}
