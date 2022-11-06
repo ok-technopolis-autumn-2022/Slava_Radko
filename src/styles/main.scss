@@ -1,44 +1,5 @@
-* {
-  padding: 0;
-  margin: 0;
-  font-family: "Roboto", sans-serif;
-  box-sizing: border-box;
-}
-
-/* Variables */
-$background: #f2f2f2;
-$font-color-primary: #666;
-$font-color-secondary: #ccc;
-
-/* Scroll */
-*::-webkit-scrollbar {
-  width: 10px;
-}
-
-*::-webkit-scrollbar-track {
-  background: #efefef;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: $font-color-secondary;
-  border-radius: 5px;
-}
-
-/* Common */
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-  background-color: $background;
-}
-
-button {
-  border: none;
-  background-color: inherit;
-  cursor: pointer;
-}
+@import "variables";
+@import "common";
 
 /* Todo */
 .todo {
