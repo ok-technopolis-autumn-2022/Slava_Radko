@@ -1,5 +1,6 @@
 @import "variables";
 @import "common";
+@import "mixins";
 
 /* Todo */
 .todo {
@@ -128,13 +129,12 @@
       &__remove {
         height: 28px;
         width: 28px;
-        background-image: url("../assets/remove.svg");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
         margin-left: 8px;
         opacity: 0;
         box-sizing: content-box;
+        background-image: url("../assets/remove.svg");
+
+        @include backgroundImage();
 
         &:focus {
           opacity: 1;
@@ -188,7 +188,61 @@
   }
 }
 
-.label_hidden {
+.popup {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 5;
+
+  form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &-inner {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50%;
+    width: 40%;
+    position: relative;
+    background-color: #fff;
+  }
+
+  &-close {
+    height: 28px;
+    width: 28px;
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background-image: url("../assets/remove.svg");
+
+    @include backgroundImage();
+  }
+
+  &-title {
+    color: $font-color-primary;
+  }
+
+  &-input {
+    width: 50%;
+    font-size: 24px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+  }
+}
+
+.label_hidden, .popup_hidden {
   display: none;
 }
 

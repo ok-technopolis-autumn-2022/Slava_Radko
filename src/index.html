@@ -17,15 +17,28 @@
     <title>Todo App</title>
   </head>
   <body>
+    <div class="popup popup_hidden">
+      <div class="popup-inner">
+        <h1 class="popup-title">
+          Change text of the task
+        </h1>
+        <button class="popup-close"></button>
+        <form action="#" method="post">
+          <label class="label_hidden" for="popup-text-change-input">Change text of the task</label>
+          <input id="popup-text-change-input" class="popup-input" type="text">
+        </form>
+      </div>
+    </div>
     <div class="todo">
       <header class="todo-header">
         <h1 class="todo-title">todos</h1>
       </header>
       <main class="todo-content">
-        <form class="todo-content__add-form add-form" method="post">
+        <form class="todo-content__add-form add-form" action="#" method="post">
+          <input type="submit" hidden>
           <button
-            class="add-form__select-all"
-            title="Select all tasks"
+                  class="add-form__select-all"
+                  title="Select all tasks"
           ></button>
           <label for="input" class="label_hidden">What needs to be done?</label>
           <input
@@ -36,60 +49,35 @@
           />
         </form>
         <ul class="todo-list">
-          <li class="todo-list__task task">
-            <input class="task__checkbox checkbox" type="checkbox" id="html" />
-            <label for="html">HTML</label>
-            <button class="task__remove" title="Remove task"></button>
-          </li>
-          <li class="todo-list__task task">
-            <input
-              class="task__checkbox checkbox"
-              type="checkbox"
-              checked
-              id="css"
-            />
-            <label for="css">CSS</label>
-            <button class="task__remove" title="Remove task"></button>
-          </li>
-          <li class="todo-list__task task">
-            <input class="task__checkbox checkbox" type="checkbox" id="js" />
-            <label for="js">JS</label>
-            <button class="task__remove" title="Remove task"></button>
-          </li>
-          <li class="todo-list__task task">
-            <input
-              class="task__checkbox checkbox"
-              type="checkbox"
-              id="jsTools"
-            />
-            <label for="jsTools">JS tools</label>
-            <button class="task__remove" title="Remove task"></button>
-          </li>
+
         </ul>
 
         <footer class="todo-footer">
           <div class="todo-footer__items-count">3 items left</div>
           <nav class="todo-footer__nav">
             <input
+              id="all"
               class="todo-footer__nav-switch"
               type="radio"
               name="switch"
-              id="all"
+              value="ALL"
               checked
             />
             <label for="all">All</label>
             <input
+              id="active"
               class="todo-footer__nav-switch"
               type="radio"
               name="switch"
-              id="active"
+              value="ACTIVE"
             />
             <label for="active">Active</label>
             <input
+              id="completed"
               class="todo-footer__nav-switch"
               type="radio"
               name="switch"
-              id="completed"
+              value="COMPLETED"
             />
             <label for="completed">Completed</label>
           </nav>
@@ -99,5 +87,6 @@
         </footer>
       </main>
     </div>
+    <script src="./js/index.js" type="module" defer></script>
   </body>
 </html>
