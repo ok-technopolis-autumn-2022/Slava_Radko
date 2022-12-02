@@ -2,6 +2,7 @@ import Todo from './components/Todo'
 import constants from './constants'
 import TodoInfo from "./model/TodoInfo";
 import {next} from "./generator";
+import {Store} from "./store/store";
 
 const todoList = document.querySelector(".todo-list")
 const input = document.querySelector(".add-form__text")
@@ -14,9 +15,9 @@ const radioGroup = document.getElementsByName('switch')
 
 let currentMode = constants.ALL
 
-let todos = []
+const store = new Store()
 
-update()
+render()
 
 function filter(it) {
     switch (currentMode) {
@@ -29,7 +30,9 @@ function filter(it) {
     }
 }
 
-function update() {
+function render() {
+    clear()
+    const todos = store.getData()
     todos.filter(filter).forEach(todo => {
         addTodoToDOM(todo)
     })
@@ -40,39 +43,34 @@ function clear() {
     todoList.innerHTML = ''
 }
 
-export function revertTodos() {
-    const checkboxes = todoList.querySelectorAll('.task__checkbox')
-    for (let i = 0; i < todos.length; i++) {
-        todos[i].isDone = !todos[i].isDone
-    }
-    for (let checkbox of checkboxes) {
-        checkbox.checked = !checkbox.checked
+export function invertTodos() {
+    switch (currentMode) {
+        case constants.ALL:
+            const isAllDone = store.isAllDone()
+            store.updateAll(todoInfo => ({...todoInfo, isDone: !isAllDone}))
+            break
+        case constants.COMPLETED:
+            store.updateIf(todoInfo => todoInfo.isDone, todoInfo => ({...todoInfo, isDone: false}))
+            break
+        case constants.ACTIVE:
+            store.updateIf(todoInfo => !todoInfo.isDone, todoInfo => ({...todoInfo, isDone: true}))
+            break
     }
     clear()
-    update()
+    render()
 }
 
 export function onCheck(id) {
-    for (let i = 0; i < todos.length; i++) {
-        if (todos[i].id === id) {
-            todos[i].isDone = !todos[i].isDone
-            refreshCount()
-            if (currentMode !== constants.ALL) {
-                removeFromTodoInDOM(id)
-            }
-            return
-        }
+    store.update(id, todoInfo => ({...todoInfo, isDone: !todoInfo.isDone}))
+    if (currentMode !== constants.ALL) {
+        removeFromTodoInDOM(id)
     }
+    refreshCount()
 }
 
 export function onRemove(id) {
-    for (let i = 0; i < todos.length; i++) {
-        if (todos[i].id === id) {
-            todos.splice(i, 1)
-            refreshCount()
-            return
-        }
-    }
+    store.remove(id)
+    refreshCount()
 }
 
 export function onChange(id) {
@@ -101,18 +99,8 @@ export function onChange(id) {
         e.preventDefault()
         const text = popupInput.value.trim()
         if (text.length > 0) {
-            for (let i = 0; i < todoList.children.length; i++) {
-                if (Number(todoList.children[i].getAttribute('data-index')) === id) {
-                    todoList.children[i].querySelector("label").innerText = text
-                    break
-                }
-            }
-            for (let i = 0; i < todos.length; i++) {
-                if (todos[i].id === id) {
-                    todos[i].text = text
-                    break
-                }
-            }
+            document.querySelector(`.todo-list__task[data-index='${id}'] label`).innerText = text
+            store.update(id, todoInfo => ({...todoInfo, text: text}))
             popupInput.value = ''
             closePopup();
             removeListeners();
@@ -124,13 +112,7 @@ export function onChange(id) {
 }
 
 function removeFromTodoInDOM(id) {
-    const children = todoList.children
-    for (const item of children) {
-        if (Number(item.getAttribute('data-index')) === id) {
-            item.remove()
-            return
-        }
-    }
+    document.querySelector(`.todo-list__task[data-index='${id}']`).remove()
 }
 
 function addTodoToDOM(todo) {
@@ -138,7 +120,7 @@ function addTodoToDOM(todo) {
 }
 
 function addTodo(todo) {
-    todos.push(todo)
+    store.add(todo)
     if (currentMode !== constants.COMPLETED) {
         addTodoToDOM(todo)
     }
@@ -146,7 +128,7 @@ function addTodo(todo) {
 }
 
 function refreshCount() {
-    count.innerHTML = todos.filter(filter).filter(it => !it.isDone).length + ' items left'
+    count.innerHTML = store.getData().filter(filter).filter(it => !it.isDone).length + ' items left'
 }
 
 function onFilterChanged() {
@@ -156,10 +138,10 @@ function onFilterChanged() {
             currentMode = radioGroupElement.value
         }
     }
-    update()
+    render()
 }
 
-selectAll.addEventListener('click', revertTodos)
+selectAll.addEventListener('click', invertTodos)
 
 form.addEventListener("submit", e => {
     e.preventDefault()
@@ -175,13 +157,9 @@ radioGroup.forEach(radio => {
 })
 
 clearCompleted.addEventListener('click', () => {
-    for (let i = 0; i < todos.length;) {
-        if (todos[i].isDone) {
-            todos.splice(i, 1);
-        } else {
-            i++;
-        }
+    if (currentMode !== constants.ACTIVE) {
+        store.removeIf(todoInfo => todoInfo.isDone)
     }
     clear()
-    update()
+    render()
 })
