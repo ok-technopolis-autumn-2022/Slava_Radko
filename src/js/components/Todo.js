@@ -11,7 +11,7 @@ export default function Todo(todo, onCheck, onRemove, onChange) {
     const callbackOnChange = e => {
         const tag = e.target.tagName.toLowerCase()
         switch (tag) {
-            case 'checkbox':
+            case 'input':
                 onCheck(todo.id)
                 break
         }
