@@ -163,3 +163,32 @@ clearCompleted.addEventListener('click', () => {
     clear()
     render()
 })
+
+const callbackOnChange = e => {
+    const tag = e.target.tagName.toLowerCase()
+    const id = Number(e.target.parentElement.getAttribute('data-index'))
+    switch (tag) {
+        case 'input':
+            onCheck(id)
+            break
+    }
+}
+
+const callbackOnClick = e => {
+    const tag = e.target.tagName.toLowerCase()
+    console.log(e.target.parentElement)
+    const id = Number(e.target.parentElement.getAttribute('data-index'))
+    console.log(id)
+    switch (tag) {
+        case 'button':
+            onRemove(id)
+            e.target.parentElement.remove()
+            break
+        case 'label':
+            onChange(id)
+            break
+    }
+}
+
+todoList.addEventListener('click', callbackOnClick)
+todoList.addEventListener('change', callbackOnChange)
