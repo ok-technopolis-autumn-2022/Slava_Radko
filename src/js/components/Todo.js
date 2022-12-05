@@ -24,18 +24,22 @@ export default function Todo(todo, onCheck, onRemove, onChange) {
         label.removeEventListener('click', callbackOnClick)
     }
 
-    const addListeners = () => {
-        checkbox.addEventListener('change', callbackOnChange)
-        button.addEventListener('click', callbackOnRemove)
-        label.addEventListener('click', callbackOnClick)
-    }
-
     li.classList.add('todo-list__task')
     li.classList.add('task')
 
     li.setAttribute("data-index", todo.id)
 
-    addListeners()
+    checkbox.addEventListener('change', callbackOnChange)
+    li.addEventListener('click', e => {
+        const tag = e.target.tagName.toLowerCase()
+        switch (tag) {
+            case 'button':
+                callbackOnRemove()
+                break
+            case 'label':
+                callbackOnClick()
+        }
+    })
 
     li.append(checkbox)
     li.append(label)
