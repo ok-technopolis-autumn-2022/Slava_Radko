@@ -8,20 +8,28 @@ export default function Todo(todo, onCheck, onRemove, onChange) {
     const button = Button(todo.id, todo.text)
     const label = Label(todo.id, todo.text)
 
-    const callbackOnChange = () => {
-        onCheck(todo.id)
+    const callbackOnChange = e => {
+        const tag = e.target.tagName.toLowerCase()
+        switch (tag) {
+            case 'checkbox':
+                onCheck(todo.id)
+                break
+        }
     }
 
-    const callbackOnClick = () => {
-        onChange(todo.id)
-    }
-
-    const callbackOnRemove = () => {
-        li.remove()
-        onRemove(todo.id)
-        checkbox.removeEventListener('change', callbackOnChange)
-        button.removeEventListener('click', callbackOnRemove)
-        label.removeEventListener('click', callbackOnClick)
+    const callbackOnClick = e => {
+        const tag = e.target.tagName.toLowerCase()
+        switch (tag) {
+            case 'button':
+                li.remove()
+                onRemove(todo.id)
+                li.removeEventListener('click', callbackOnClick)
+                li.removeEventListener('change', callbackOnChange)
+                break
+            case 'label':
+                onChange(todo.id)
+                break
+        }
     }
 
     li.classList.add('todo-list__task')
@@ -29,17 +37,8 @@ export default function Todo(todo, onCheck, onRemove, onChange) {
 
     li.setAttribute("data-index", todo.id)
 
-    checkbox.addEventListener('change', callbackOnChange)
-    li.addEventListener('click', e => {
-        const tag = e.target.tagName.toLowerCase()
-        switch (tag) {
-            case 'button':
-                callbackOnRemove()
-                break
-            case 'label':
-                callbackOnClick()
-        }
-    })
+    li.addEventListener('click', callbackOnClick)
+    li.addEventListener('change', callbackOnChange)
 
     li.append(checkbox)
     li.append(label)
