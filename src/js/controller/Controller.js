@@ -1,8 +1,9 @@
-import constants from "../constants";
+import Mode from "../store/Mode";
 import TodoItem from "../components/TodoItem";
-import State from "../state/State";
 import Todo from "../model/Todo";
 import { next } from "../generator";
+import Action from "../actions/Action";
+import ActionType from "../actions/ActionType";
 
 export default class Controller {
   /**
@@ -13,15 +14,12 @@ export default class Controller {
    * @type {HTMLElement}
    * */
   #root;
-  /**
-   * @type {State}
-   * */
-  #state;
+  #dispatch;
 
   constructor(store, root) {
     this.#store = store;
     this.#root = root;
-    this.#state = new State();
+    this.#dispatch = store.getDispatch();
   }
 
   /**
@@ -50,21 +48,9 @@ export default class Controller {
     this.#rerender();
   };
 
-  #filter = (it) => {
-    switch (this.#state.getCurrentMode()) {
-      case constants.ALL:
-        return true;
-      case constants.ACTIVE:
-        return !it.isDone;
-      case constants.COMPLETED:
-        return it.isDone;
-    }
-  };
-
   #rerender = () => {
     this.#clear();
-    const todos = this.#store.getData();
-    todos.filter(this.#filter).forEach((todo) => {
+    this.#store.getState().getCurrentTodos().forEach((todo) => {
       this.#addTodoToDOM(todo);
     });
     this.#refreshCount();
@@ -83,8 +69,8 @@ export default class Controller {
   };
 
   #addTodo = (todo) => {
-    this.#store.add(todo);
-    if (this.#state.getCurrentMode() !== constants.COMPLETED) {
+    this.#dispatch(new Action(ActionType.ADD_TODO, {value: todo}))
+    if (this.#store.getState().getCurrentMode() !== Mode.COMPLETED) {
       this.#addTodoToDOM(todo);
     }
     this.#refreshCount();
@@ -92,11 +78,7 @@ export default class Controller {
 
   #refreshCount = () => {
     const count = document.querySelector(".todo-footer__items-count");
-    count.innerHTML =
-      this.#store
-        .getData()
-        .filter(this.#filter)
-        .filter((it) => !it.isDone).length + " items left";
+    count.innerHTML = this.#store.getState().getActiveCount() + " items left";
   };
 
   /* Callbacks of listeners */
@@ -106,7 +88,7 @@ export default class Controller {
     this.#clear();
     for (let radioGroupElement of radioGroup) {
       if (radioGroupElement.checked) {
-        this.#state.setCurrentMode(radioGroupElement.value);
+        this.#dispatch(ActionType.MODE_CHANGED, {value: radioGroupElement.value})
       }
     }
     this.#rerender();
@@ -147,52 +129,29 @@ export default class Controller {
   };
 
   #onClearCompleted = () => {
-    if (this.#state.getCurrentMode() !== constants.ACTIVE) {
-      this.#store.removeIf((todoInfo) => todoInfo.isDone);
+    if (this.#store.getState().getCurrentMode() !== Mode.ACTIVE) {
+      this.#dispatch(ActionType.CLEAR_COMPLETED);
     }
     this.#clear();
     this.#rerender();
   };
 
   #onCompleteAllTodos = () => {
-    switch (this.#state.getCurrentMode()) {
-      case constants.ALL:
-        const isAllDone = this.#store.isAllDone();
-        this.#store.updateAll((todoInfo) => ({
-          ...todoInfo,
-          isDone: !isAllDone,
-        }));
-        break;
-      case constants.COMPLETED:
-        this.#store.updateIf(
-          (todoInfo) => todoInfo.isDone,
-          (todoInfo) => ({ ...todoInfo, isDone: false })
-        );
-        break;
-      case constants.ACTIVE:
-        this.#store.updateIf(
-          (todoInfo) => !todoInfo.isDone,
-          (todoInfo) => ({ ...todoInfo, isDone: true })
-        );
-        break;
-    }
+    this.#dispatch(ActionType.COMPLETE_ALL)
     this.#clear();
     this.#rerender();
   };
 
   #onCheckTodo = (id) => {
-    this.#store.update(id, (todoInfo) => ({
-      ...todoInfo,
-      isDone: !todoInfo.isDone,
-    }));
-    if (this.#state.getCurrentMode() !== constants.ALL) {
+    this.#dispatch(ActionType.CHECK, {value: id})
+    if (this.#store.getState().getCurrentMode() !== Mode.ALL) {
       this.#removeFromTodoInDOM(id);
     }
     this.#refreshCount();
   };
 
   #onRemoveTodo = (id) => {
-    this.#store.remove(id);
+    this.#dispatch(ActionType.REMOVE, {value: id});
     this.#refreshCount();
   };
 
@@ -235,7 +194,7 @@ export default class Controller {
         document.querySelector(
           `.todo-list__task[data-index='${id}'] label`
         ).innerText = text;
-        this.#store.update(id, (todoInfo) => ({ ...todoInfo, text: text }));
+        this.#dispatch(ActionType.CHANGE_TEXT, {value: {id, text}})
         popupInput.value = "";
         this.#closePopup();
         this.#removeListenersOnPopup();
