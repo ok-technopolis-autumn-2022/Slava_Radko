@@ -50,9 +50,12 @@ export default class Controller {
 
   #rerender = () => {
     this.#clear();
-    this.#store.getState().getCurrentTodos().forEach((todo) => {
-      this.#addTodoToDOM(todo);
-    });
+    this.#store
+      .getState()
+      .getCurrentTodos()
+      .forEach((todo) => {
+        this.#addTodoToDOM(todo);
+      });
     this.#refreshCount();
   };
 
@@ -69,7 +72,7 @@ export default class Controller {
   };
 
   #addTodo = (todo) => {
-    this.#dispatch(new Action(ActionType.ADD_TODO, {value: todo}))
+    this.#dispatch(new Action(ActionType.ADD_TODO, { value: todo }));
     if (this.#store.getState().getCurrentMode() !== Mode.COMPLETED) {
       this.#addTodoToDOM(todo);
     }
@@ -88,7 +91,9 @@ export default class Controller {
     this.#clear();
     for (let radioGroupElement of radioGroup) {
       if (radioGroupElement.checked) {
-        this.#dispatch(ActionType.MODE_CHANGED, {value: radioGroupElement.value})
+        this.#dispatch(ActionType.MODE_CHANGED, {
+          value: radioGroupElement.value,
+        });
       }
     }
     this.#rerender();
@@ -137,13 +142,13 @@ export default class Controller {
   };
 
   #onCompleteAllTodos = () => {
-    this.#dispatch(ActionType.COMPLETE_ALL)
+    this.#dispatch(ActionType.COMPLETE_ALL);
     this.#clear();
     this.#rerender();
   };
 
   #onCheckTodo = (id) => {
-    this.#dispatch(ActionType.CHECK, {value: id})
+    this.#dispatch(ActionType.CHECK, { value: id });
     if (this.#store.getState().getCurrentMode() !== Mode.ALL) {
       this.#removeFromTodoInDOM(id);
     }
@@ -151,7 +156,7 @@ export default class Controller {
   };
 
   #onRemoveTodo = (id) => {
-    this.#dispatch(ActionType.REMOVE, {value: id});
+    this.#dispatch(ActionType.REMOVE, { value: id });
     this.#refreshCount();
   };
 
@@ -194,7 +199,7 @@ export default class Controller {
         document.querySelector(
           `.todo-list__task[data-index='${id}'] label`
         ).innerText = text;
-        this.#dispatch(ActionType.CHANGE_TEXT, {value: {id, text}})
+        this.#dispatch(ActionType.CHANGE_TEXT, { value: { id, text } });
         popupInput.value = "";
         this.#closePopup();
         this.#removeListenersOnPopup();

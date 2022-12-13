@@ -17,4 +17,4 @@ export default class Todo {
     this.text = text;
     this.isDone = isDone;
   }
-};
+}

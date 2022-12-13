@@ -7,12 +7,8 @@ import State from "./store/State";
 
 const root = document.querySelector(".todo-list");
 const store = new Store(
-    [
-        addReducer,
-        changeReducer,
-        removeReducer
-    ],
-    new State()
+  [addReducer, changeReducer, removeReducer],
+  new State()
 );
 
 const controller = new Controller(store, root);

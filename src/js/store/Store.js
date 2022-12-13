@@ -2,11 +2,11 @@ export class Store {
   /**
    * @type {Object[]}
    * */
-  #reducers
+  #reducers;
   /**
    * @type {State}
    * */
-  #state
+  #state;
 
   constructor(reducers, state) {
     this.#reducers = reducers;
@@ -32,9 +32,9 @@ export class Store {
    * */
   getDispatch() {
     return (action) => {
-      this.#reducers.forEach(it => {
-        this.#setState(it.reduce(this.getState(), action))
+      this.#reducers.forEach((it) => {
+        this.#setState(it.reduce(this.getState(), action));
       });
-    }
+    };
   }
 }
